@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+     <head>
+         <meta charset="UTF-8">
+         <title>Control</title>
+     </head>
+     <body>
+	     <canvas id="canvas" width="500" height="500"></canvas>
+		 <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+         <script>
+		     var canvas = document.getElementById("canvas");
+			 var ctx = canvas.getContext("2d");
+			 // Получаем ширину и высоту элемента canvas
+			 var width = canvas.width;
+			 var height = canvas.height;
+			 // Вычисляем ширину и высоту в ячейках
+			 var blockSize = 10;
+			 var widthInBlocks = width / blockSize;
+			 var heightInBlocks = height / blockSize;
+			 var xSpeed = 0;
+			 var ySpeed = 0;
+			 var scoreC = 0;
+			 var scoreP = 0;
+			 var color2 = ['brown', 'red', 'orange', 'gold', 'gray'];
+			 var drawScore = function () {
+			     ctx.beginPath();
+				 ctx.font = '15px Comics Sans';
+				 ctx.fillText('Player score: ' + scoreP, 30, 30);
+				 ctx.fillText('Computer score: ' + scoreC, 140, 30);
+				 ctx.stroke();
+				 if (scoreP > 9) {
+                     scoreC = 0;
+			         scoreP = 0;
+					 alert('Next Level');
+                 } 
+			 }
+			 // Рисуем окружность (используя функцию из главы 14)
+			 var circle = function (x, y, radius, fillCircle) {
+    			 ctx.beginPath();
+		    	 ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+				 if (fillCircle) {
+    				 ctx.fill();
+				 } else {
+    				 ctx.stroke();
+				 }
+			 };
+			 // Задаем конструктор Block (ячейка)
+			 var Block = function (col, row) {
+    			 this.col = col;
+				 this.row = row;
+			 };
+			 // Рисуем квадрат в позиции ячейки
+			 Block.prototype.drawSquare = function (color) {
+   				 var x = this.col * blockSize;
+				 var y = this.row * blockSize;
+				 ctx.fillStyle = color;
+				 ctx.fillRect(x, y, blockSize, blockSize);
+			 };
+			 // Рисуем круг в позиции ячейки
+			 Block.prototype.drawCircle = function (color) {
+				 var centerX = this.col * blockSize + blockSize / 2;
+				 var centerY = this.row * blockSize + blockSize / 2;
+				 ctx.fillStyle = color;
+				 circle(centerX, centerY, blockSize / 2, true);
+			 };
+			 // Проверяем, находится ли эта ячейка в той же позиции, что и ячейка
+			 // otherBlock
+			 Block.prototype.equal = function (otherBlock) {
+   				 return this.col === otherBlock.col && this.row === otherBlock.row;
+			 };
+			 // Задаем конструктор Platform
+			 var Platform = function () {
+			     this.segments = [new Block(21, 43), new Block(22, 43), new Block(23, 43), new Block(24, 43), new Block(25, 43)];
+				 this.direction;				 
+			 };
+             var Rocet = function () {
+                 this.x3 = 50;
+			     this.y3 = 50;
+				 this.block2 = new Block(this.x3, this.y3);
+             }		
+             Rocet.prototype.draw = function () {
+			     this.block2.drawSquare('darkgreen');
+			 }
+			 Rocet.prototype.move = function () {
+			     this.newBlock2 = new Block(this.block2.col, this.block2.row -= 1); 
+			 }
+			 Platform.prototype.draw = function () {				 
+    			 for (var i = 0; i < this.segments.length; i += 2) {
+    				 this.segments[i].drawSquare("LimeGreen");
+			     }
+				 for (var i = 1; i < this.segments.length; i += 2) {
+    				 this.segments[i].drawSquare("Blue");
+				 }
+			 };
+			 Platform.prototype.move = function () {
+			     var head = this.segments[0];
+				 var newHead;
+				 if (this.direction === "right") {
+   		    		 newHead = new Block(head.col + 1, head.row);
+				 } else if (this.direction === "left") {
+       				 newHead = new Block(head.col - 1, head.row);
+	 			 }
+			 }
+			 //Создание конструктора Meteorite
+			 var Meteorite = function() {
+			     this.speedM = 1;
+                 this.x2 = Math.floor(Math.random() * (45 - 5) + 5);
+			     this.y2 = 3;
+				 this.block = new Block(this.x2, this.y2);
+				 this.color = color2[Math.floor(Math.random() * color2.length)];					 
+			 }
+			 //Создание метода draw для конструктора Meteorite
+             Meteorite.prototype.draw = function() {
+				 this.block.drawCircle(this.color);
+             }
+			 //Создание метода move
+			 Meteorite.prototype.move = function() {
+                 this.newBlock = new Block(this.block.col, this.block.row += this.speedM)
+				 if (scoreP > 9) {
+				     this.x2 = Math.floor(Math.random() * (45 - 5) + 5);
+					 this.color = color2[Math.floor(Math.random() * color2.length)];
+                     this.block = new Block(this.x2, this.y2);		
+					 this.speedM++;
+                 } else if (scoreC > 9) {
+				     this.x2 = Math.floor(Math.random() * (45 - 5) + 5);
+					 this.color = color2[Math.floor(Math.random() * color2.length)];
+				     this.block = new Block(this.x2, this.y2);
+					 scoreC = 0;
+			         scoreP = 0;
+					 alert('Game Over');
+				     this.speedM = 1;
+				 }
+				 if (this.block.row > 50) {
+				     this.x2 = Math.floor(Math.random() * (45 - 5) + 5);
+					 this.color = color2[Math.floor(Math.random() * color2.length)];
+				     this.block = new Block(this.x2, this.y2);
+					 scoreC++; 
+				 }
+				 rocet.move();
+	    	     if (this.newBlock.equal(platform.segments[0])) {
+				         this.color = color2[Math.floor(Math.random() * color2.length)];
+				         this.x2 = Math.floor(Math.random() * (45 - 5) + 5); 		
+						 this.block.col = this.x2;
+						 this.block.row = this.y2;
+						 scoreP++;
+				 } else if (this.newBlock.equal(rocet.newBlock2)) {
+				         this.color = color2[Math.floor(Math.random() * color2.length)];
+				         this.x2 = Math.floor(Math.random() * (45 - 5) + 5);	
+						 this.block.col = this.x2;
+						 this.block.row = this.y2;
+						 scoreP++;
+				 } else if (this.newBlock.equal(platform.segments[1])) {
+				         this.color = color2[Math.floor(Math.random() * color2.length)];
+				         this.x2 = Math.floor(Math.random() * (45 - 5) + 5);
+						 this.block.col = this.x2;
+						 this.block.row = this.y2;
+						 scoreP++;
+				 } else if (this.newBlock.equal(platform.segments[2])) {
+				         this.color = color2[Math.floor(Math.random() * color2.length)];
+				         this.x2 = Math.floor(Math.random() * (45 - 5) + 5);		
+						 this.block.col = this.x2;
+						 this.block.row = this.y2;
+						 scoreP++;
+				 } else if (this.newBlock.equal(platform.segments[3])) {
+				         this.color = color2[Math.floor(Math.random() * color2.length)];
+				         this.x2 = Math.floor(Math.random() * (45 - 5) + 5);				 
+						 this.block.col = this.x2;
+						 this.block.row = this.y2;
+						 scoreP++;
+				 } else if (this.newBlock.equal(platform.segments[4])) {
+				         this.color = color2[Math.floor(Math.random() * color2.length)];
+				         this.x2 = Math.floor(Math.random() * (45 - 5) + 5);
+ 		
+						 this.block.col = this.x2;
+						 this.block.row = this.y2;
+						 scoreP++;
+				 }			 
+             }
+			 Platform.prototype.setDirection = function (direction) {
+			     var head = this.segments[0];
+				 var back = this.segments[4];
+			     if (direction === "left") {
+				     this.segments.unshift(new Block(head.col - 1, head.row));
+    				 this.segments.pop();
+				 } else if (direction === "right") {
+				     this.segments.push(new Block(back.col + 1, back.row));
+    				 this.segments.shift();
+				 } else if (direction !== "right" && direction !== "left") {
+				     rocet.block2.col = this.segments[2].col;
+					 rocet.block2.row = this.segments[2].row;
+				 }
+			 }
+			 //Создание объектов
+			 var meteorite = new Meteorite ();
+			 var platform = new Platform();
+			 var rocet = new Rocet();                 
+   		     intervalId = setInterval(function () {
+    			 ctx.clearRect(0, 0, width, height);
+				 drawScore();
+				 platform.draw();
+				 platform.move();
+				 //Вызов методов draw объектов Meteorite
+    	         meteorite.draw();
+				 //Вызов методов move объектов Meteorite
+				 meteorite.move();
+				 rocet.draw();
+	    		 rocet.move();
+				 ctx.strokeRect(0, 0, 500, 500);
+			 }, 35);
+			 // Преобразуем коды клавиш в направления
+			 var directions = {
+   				 37: "left",
+				 39: "right"
+			 };
+			 // Задаем обработчик события keydown (клавиши-стрелки)
+			 $("body").keydown(function (event) {
+   				 direction = directions[event.keyCode]; 
+   				 platform.setDirection(direction);
+			 });
+         </script>
+     </body>
+</html>

@@ -1,0 +1,265 @@
+<html>
+     <head>
+	     <meta charset="UTF-8">
+         <title>Игра Яхта</title>
+     </head>
+     <body>
+	     <h1> Yachting Game </h1>
+		 <p id="SMS2"></p>
+		 <p id="SMS"></p>
+		 <p id="SMS3"></p>
+         <canvas id="canvas" width="600" height="600"></canvas>
+         <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+         <script>
+     		 var canvas = document.getElementById("canvas");
+			 var ctx = canvas.getContext("2d");
+			 var width = canvas.width;
+			 var height = canvas.height;
+			 var i = 0;
+			 // Создаю фнкцию рисующую море
+			 var drawSea = function () {
+			     ctx.beginPath();
+			     ctx.fillStyle = "LightBlue";
+		    	 ctx.fillRect(0, 0, 600, 600);
+				 ctx.fill();
+			 }
+			 // Создание конструктора Yacht
+			 var Yacht = function () {
+    			 this.x = 300;
+				 this.y = 500;
+				 this.xSpeed = 0;
+				 this.ySpeed = 0;
+				 this.speeds = 3;
+			 };
+			  // Создание конструктора Buoy
+			 var Buoy = function (x2, y2) {
+    			 this.x2 = x2;
+				 this.y2 = y2;
+			 };
+			 // Функция draw конструктора Yacht
+			 Yacht.prototype.draw = function () {
+			     if (this.ySpeed < 0) {
+    		         ctx.beginPath();
+					 ctx.fillStyle = "limegreen";
+					 ctx.fillRect(this.x, this.y, 26, 40);
+					 ctx.fill();
+					 ctx.beginPath();
+					 ctx.fillStyle = "white";
+					 ctx.moveTo(this.x + 13, this.y);
+					 ctx.lineTo(this.x + 3, this.y + 30);
+					 ctx.lineTo(this.x + 22, this.y + 30);
+					 ctx.fill();
+				 } else if (this.ySpeed > 0) {
+                     ctx.beginPath();
+					 ctx.fillStyle = "limegreen";
+					 ctx.fillRect(this.x, this.y, 26, -40);
+					 ctx.fill();
+					 ctx.beginPath();
+					 ctx.fillStyle = "white";
+					 ctx.moveTo(this.x + 13, this.y);
+					 ctx.lineTo(this.x + 3, this.y - 30);
+					 ctx.lineTo(this.x + 22, this.y - 30);
+					 ctx.fill();  
+				 } 
+				 if (this.xSpeed < 0) {
+                     ctx.beginPath();
+					 ctx.fillStyle = "limegreen";
+					 ctx.fillRect(this.x, this.y, 40, 26);
+					 ctx.fill();
+					 ctx.beginPath();
+					 ctx.fillStyle = "white";
+					 ctx.moveTo(this.x, this.y + 13);
+					 ctx.lineTo(this.x + 30, this.y + 3);
+					 ctx.lineTo(this.x + 30, this.y + 22);
+					 ctx.fill();
+				 } else if (this.xSpeed > 0) {
+                     ctx.beginPath();
+					 ctx.fillStyle = "limegreen";
+					 ctx.fillRect(this.x, this.y, -40, 26);
+					 ctx.fill();
+					 ctx.beginPath();
+					 ctx.fillStyle = "white";
+					 ctx.moveTo(this.x, this.y + 13);
+					 ctx.lineTo(this.x - 30, this.y + 3);
+					 ctx.lineTo(this.x - 30, this.y + 22);
+					 ctx.fill();
+			     }
+			 }
+			 // Функция move конструктора Yacht
+			 Yacht.prototype.move = function () {
+     			 this.x += this.xSpeed;
+				 this.y += this.ySpeed;
+			 }
+			 // Функция упровления объекта с помощью стрелок конструктора Yacht
+			 Yacht.prototype.setDirection = function (direction) {
+    			 if (direction === "up") {
+	    			 this.xSpeed = 0;
+					 this.ySpeed = -this.speeds; 
+				 } else if (direction === "down") {
+    				 this.xSpeed = 0;
+					 this.ySpeed = this.speeds;
+				 } else if (direction === "left") {
+    				 this.xSpeed = -this.speeds;
+					 this.ySpeed = 0;
+				 } else if (direction === "right") {
+    				 this.xSpeed = this.speeds;
+					 this.ySpeed = 0;
+				 }
+			 }
+			 // Функция draw конструктора Buoy
+			 Buoy.prototype.draw = function () {
+			     ctx.lineWidth = 5;
+				 if (this.x2 === 100 && this.y2 === 100) {
+				     ctx.beginPath();
+					 ctx.arc(this.x2, this.y2, 25, 0, Math.PI * 2, false);
+					 ctx.moveTo(this.x2, this.y2 - 15);
+					 ctx.lineTo(this.x2, this.y2 + 15);
+					 ctx.stroke();
+				 } else if (this.x2 === 250 && this.y2 === 480) {
+				     ctx.beginPath();
+					 ctx.arc(this.x2, this.y2, 25, 0, Math.PI * 2, false);
+					 ctx.moveTo(this.x2 - 10, this.y2 - 10);
+					 ctx.lineTo(this.x2 - 10, this.y2 + 13);
+					 ctx.moveTo(this.x2 + 10, this.y2 - 10);
+					 ctx.lineTo(this.x2 + 10, this.y2 + 13);
+					 ctx.stroke();
+				 } else if (this.x2 === 450 && this.y2 === 200) {
+				     ctx.beginPath();
+					 ctx.arc(this.x2, this.y2, 25, 0, Math.PI * 2, false);
+					 ctx.moveTo(this.x2 - 10, this.y2 - 10);
+					 ctx.lineTo(this.x2 - 10, this.y2 + 10);
+					 ctx.moveTo(this.x2 + 10, this.y2 - 10);
+					 ctx.lineTo(this.x2 + 10, this.y2 + 10);
+					 ctx.moveTo(this.x2, this.y2 - 10);
+					 ctx.lineTo(this.x2, this.y2 + 10);
+					 ctx.stroke();
+				 } else if (this.x2 === 500 && this.y2 === 500) {
+				     ctx.beginPath();
+					 ctx.fillStyle = "gold";
+					 ctx.arc(this.x2, this.y2, 5, 0, Math.PI * 2, false);
+					 ctx.fillRect(this.x2, this.y2, 75, 5);
+					 ctx.arc(575, 500, 5, 0, Math.PI * 2, false);
+					 ctx.fill();
+				 }
+			 }
+			 var score = 0;	
+			 var a = 0;
+			 // Функция проверки столкновения координат объекта конструктора Buoy и объекта конструктора Yacht
+			 Yacht.prototype.distance = function () {
+				 if ((this.x > 75 && this.x < 125 && this.y > 75 && this.y < 125) && (i === 0)) {
+                     alert("Уровень не пройден попробуйте ещё раз!");
+                     this.x = 300;
+			    	 this.y = 500;
+ 					 this.speeds = 3;
+					 $("#SMS3").text(" ");
+					 score = 0;
+					 a = 0;
+					 i = 0;
+				 } else if ((this.x > 225 && this.x < 275 && this.y > 455 && this.y < 505) && (i === 1)) {
+                     alert("Уровень не пройден попробуйте ещё раз!");
+                     this.x = 300;
+			    	 this.y = 500;
+ 					 this.speeds = 3;
+					 $("#SMS3").text(" ");
+					 score = 0;
+					 a = 0;
+					 i = 0;
+				 } else if ((this.x > 425 && this.x < 475 && this.y > 175 && this.y < 225) && (i === 2)) {
+                     alert("Уровень не пройден попробуйте ещё раз!");
+                     this.x = 300;
+			    	 this.y = 500;
+ 					 this.speeds = 3;
+					 $("#SMS3").text(" ");
+					 score = 0; 
+					 a = 0;
+					 i = 0;
+				 } else if ((this.x > 480 && this.x < 575 && this.y > 503 && this.y < 513) && (i === 3)) {
+                     alert("Уровень пройден! Следующий уровень!");
+                     this.x = 300;
+			    	 this.y = 500;
+					 $("#SMS3").text(++score + "-й уровень пройден!!!");
+ 					 this.speeds++;
+					 a = 0;
+					 i = 0;
+				 }
+			 }
+			 // Функция проверки столкновения координат контрольных точек и объекта конструктора Yacht
+			 Yacht.prototype.contrlPoints = function () {
+			     if (i === 0 && a === 0) {
+  				     $("#SMS").text("Обойдите первый буй с правой стороны!");
+					 $("#SMS2").text("Возмите контрольную точку А!");
+				 }
+				 if ((this.x > 127 && this.x < 167 && this.y < 100 && this.y > 90) && (i === 0) && (a === 0)) {
+                     a = 1;
+					 $("#SMS2").text("Возмите контрольную точку I!");
+ 					 console.log('a');
+				 } else if ((this.x > 17 && this.x < 77 && this.y < 100 && this.y > 90) && (i === 0) && (a === 1)) {
+                     a = 0;
+					 i = 1;
+					 $("#SMS2").text("Возмите контрольную точку А2!");
+					 console.log('i');
+					  $("#SMS").text("Обойдите второй буй с левой стороны!");
+				 }  
+				 if ((this.x > 145 && this.x < 215 && this.y < 480 && this.y > 470) && (i === 1) && (a === 0)) {
+                     a = 1;
+					 $("#SMS2").text("Возмите контрольную точку I2!");
+ 					 console.log('a2');
+				 } else if ((this.x > 262 && this.x < 352 && this.y < 480 && this.y > 470) && (i === 1) && (a === 1)) {
+                     a = 0;
+					 i = 2;
+					 $("#SMS2").text("Возмите контрольную точку А3!");
+					 console.log('i2');
+					 $("#SMS").text("Обойдите третий буй с левой стороны!");
+				 }
+				 if ((this.x > 340 && this.x < 427 && this.y < 200 && this.y > 190) && (i === 2) && (a === 0)) {
+                     a = 1;
+					 $("#SMS2").text("Возмите контрольную точку I3!");
+ 					 console.log('a3');
+				 } else if ((this.x > 477 && this.x < 530 && this.y < 200 && this.y > 190) && (i === 2) && (a === 1)) {
+                     a = 0;
+					 i = 3;
+					 $("#SMS2").text(" ");
+					 console.log('i3');
+					 $("#SMS").text("Доберитесь до финиша!");
+				 }
+			 }
+			 // создание объекта yacht
+			 var yacht = new Yacht(); 
+			 // создание объекта keyActions
+			 var keyActions = {
+    	 		 32: "stop", // остановка
+				 37: "left", // влево
+				 38: "up", // вверх
+				 39: "right",// вправо
+				 40: "down", // вниз
+			 };
+			 // Обработчик события keydown, будет вызван при каждом нажатии
+			 // клавиши
+			 $("body").keydown(function (event) {
+    			 var direction = keyActions[event.keyCode];
+				 yacht.setDirection(direction);
+			 });
+			 //создание объектов
+			 var buoy1 = new Buoy(100, 100);
+			 var buoy2 = new Buoy(250, 480);
+			 var buoy3 = new Buoy(450, 200);
+			 var finishLine = new Buoy(500, 500);		 
+			 // подсказки
+			 $("#SMS3").text(" ");
+			 alert("Для начала игры нажмите вверхнюю стрелку");
+			 // игровой (цикл)
+			 setInterval(function () {
+     			 ctx.clearRect(0, 0, width, height);
+				 drawSea();
+				 yacht.draw();
+				 yacht.move();
+				 buoy1.draw();
+				 buoy2.draw();
+				 buoy3.draw();
+				 finishLine.draw();
+				 yacht.distance();
+				 yacht.contrlPoints();
+			 }, 30);
+         </script>
+     </body>
+</html>

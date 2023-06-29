@@ -1,0 +1,175 @@
+
+/* Head */
+.name {
+	 text-align: left;
+	 color: #106d43;
+	 font-size: 50px;
+}
+table.center {
+	 margin: auto;
+}
+img[title="HOME"] {
+	 text-align: left; 
+	 width: 125px;
+	  vertical-align: bottom;
+}
+td > h1 {
+	 vertical-align: bottom;
+}
+.menu{
+	 background-color: #70B5D3; 
+	 text-align: center;
+}
+/* /Head */
+/* Body */
+body {
+	 background-color: #C0C0C0;
+	 font-family: Geneva, Arial, Helvetica, sans-serif;
+	 scale: 80%;
+}
+table {
+	 background-color: #FFFFFF; 
+	 margin: auto;
+	 width: 1600px;
+}
+ul {
+	 list-style-type: square;
+	 font-size: 18px;
+	  text-align: left;
+}
+.AboutMe img {
+	 margin: 25px;
+	 float: left;
+}
+.AboutMe h3 { 
+     text-align: center;
+}
+
+
+.myParents img.foto1 {
+	 width: 380px; 
+	 float: left; 
+	 margin: 25px;
+}
+#foto {
+	 width: 1180px; 
+	 float: center; 
+}
+tr > td {
+	 vertical-align: top;
+}
+a {
+	 color: #045284;
+}
+a:hover {
+	 color: #107045;
+	 background-color: #C0C0C0;
+}
+img[src="Images/index_foto.jpg"] {
+	 text-align: center; 
+	 width: 1200px;
+	  vertical-align: bottom;
+}
+#gif {
+	 text-align: center;
+}
+#text {
+	 color: #195184; 
+	 text-align: center;
+}
+.menu2{
+	 text-align: center;
+	 width: 300px;
+}
+img[alt] {
+	 width: 250px;
+}
+ h2 {
+	 color: #106d43;
+	 text-align: center;
+	 font-size: 30px; 
+}
+ h1{
+	 color: #195184;
+	 text-align: left;
+	 font-size: 50px; 
+	 margin-left: 15px;
+}
+ h3 {
+	 color: #195184;
+	 float: left;
+	 font-size: 25px;
+}
+ h1.center {
+	 color: #195184;
+	 float: center;
+	 font-size: 25px;
+}
+h4 {
+	 color: #195184;
+	 text-align: center;
+	 font-size: 20px;
+}
+ p {
+	 text-align: left;
+	 font-size: 18px; 
+	 margin: 15px;
+}
+.prog img{
+	 width: 44px;
+}
+.prog b{
+	 float: right;
+}
+.prog img.L{
+	 float: left;
+	 margin: 15px;
+	 width: 333px;
+}
+img.L {
+	 float: left;
+	 margin: 15px;	 
+}
+img.R {
+	 float: right;
+	 margin: 15px;
+}
+/* /Body */
+/*Contacts*/
+table.contacts h3, .center{
+	 text-align: center;
+}
+table.contacts{
+     color:#045284;
+	 text-align: left;
+}
+table.contacts img {
+	 margin-left: 20px;
+	 height: 35px; 
+	 width: 35px;
+}
+
+table.contacts img[title], table.contacts a{
+	 height: 37px; 
+	 width: 37px;
+	  background-color: #FFFFFF;
+}
+table.contacts a[title="My GMAIL"]:hover {
+	 background-color: #C0C0C0;
+} 
+/* /Contacts*/	 
+div {
+	 width: 1600px;
+
+	  text-align: center;
+}
+#myCarousel	{
+    text-align: center;
+	 width: 1000px;
+}	 
+ .container {
+    padding-right: 15px;
+    padding-left:  15px;
+  }	 
+	 
+	 
